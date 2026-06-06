@@ -11,12 +11,15 @@ This project analyzes traffic accident data in Jordan to uncover trends, pattern
 ```
 Jordan Traffic Accident/
 ├── Code/
-│   └── SQL Analysis.ipynb          # Main analysis notebook
+│   └── SQL Analysis.ipynb                    # Main analysis notebook
 ├── Data/
 │   ├── Raw/
 │   │   └── JO_traffic_accidents_raw_data_En.csv
 │   └── Cleaned/
-│       └── JO_traffic_accidents_raw_data_En.csv
+│       ├── JO_traffic_accidents_raw_data_En.csv
+│       └── JO_traffic_accidents_cleaned_data_En_V2.csv    # Enhanced dataset with Power BI columns
+├── PowerBI/
+│   └── JO_Traffic_Accident_Dashboard                      # Interactive dashboard
 └── README.md
 ```
 
@@ -89,32 +92,105 @@ The following data cleaning steps were implemented to improve data quality and c
 
 ---
 
+## Data Enhancement for Power BI Performance
+
+### Version 2: Enhanced Dataset (V2)
+
+To optimize Power BI dashboard performance and eliminate the need for recalculated columns during report refresh, the cleaned dataset was enhanced with **helper columns** pre-calculated in Excel. The **JO_traffic_accidents_cleaned_data_En_V2.csv** includes the following helper fields:
+
+#### Helper Columns Created
+
+**1. Age Group** - Groups driver ages into 7 demographic segments (Under 18, 18-25, 26-35, 36-45, 46-55, 56-65, 65+) for easier demographic analysis and dashboard filtering
+
+**2. Age Group Order** - Provides numeric sorting order for age group visualizations to ensure correct sequence in Power BI (assigns 0 for Unknown Age, then 1-7 for each age bracket)
+
+**3. Expected Vehicle** - Maps vehicle license classes to standardized vehicle type categories (e.g., Class 1 → Motorcycle, Class 3 → Passenger Vehicle, Class 6a/6b/6ab → Heavy Vehicle/Bus/Trailer) for clearer categorization
+
+**4. License Status** - Flags potential mismatches between driver license class and actual vehicle type to identify data quality issues (e.g., when license class doesn't align with vehicle classification)
+
+**5. Violation Flag** - Binary indicator (1 or 0) marking records with license-vehicle mismatches for quick filtering and data quality monitoring in Power BI
+
+---
+
+## Power BI Dashboard Insights
+
+### Page 1: Driver & Vehicle Risk Analysis
+
+**Key Findings:**
+
+1. **Age Group Risk Distribution**
+   - **Highest Risk Segment**: 26-35 age group accounts for 20,300 accidents
+   - **Second Highest**: 36-45 age group with 14,000 accidents
+   - **Business Implication**: Young-to-middle-aged drivers (26-45) represent the largest accident demographic, suggesting need for targeted safety campaigns and intervention programs in this age bracket
+
+2. **Vehicle Type Accident Frequency**
+   - **Most Accidents**: Passenger vehicles (up to 9 seats) lead with 54,000 incidents
+   - **Second Most**: Trucks with 7,000 accidents
+   - **Insight**: Private passenger vehicles dominate the accident distribution, reflecting high circulation volume on roads
+
+3. **Most Critical Driver Error**
+   - **Improper Lane Changes**: Identified as the most dangerous mistake category
+   - **Fatal Incidents**: 58 deaths attributed to improper lane changes (2018 data)
+   - **Business Action**: Implement lane discipline awareness campaigns and consider road markings enhancement in high-risk corridors
+
+### Page 2: Geographic & Environmental Risk Patterns
+
+**Key Findings:**
+
+1. **Weather Conditions Impact**
+   - **Dominant Condition**: Clear weather accounts for the majority of recorded accidents across cities
+   - **Notable Exception - Amman**: Slight but measurable percentage of rain-related accidents
+   - **Insight**: Weather does not appear to be a primary accident driver; road infrastructure and driver behavior are likely more significant factors
+
+2. **Fatality Distribution by Driver License Class**
+   - **Highest Deaths**: Class 3 (Passenger Vehicle) with 123 deaths
+   - **Secondary Risk**: Class 6ab (Heavy Vehicle/Bus/Trailer) with 18 deaths
+   - **Pattern**: Passenger vehicle accidents account for the majority of fatalities, correlating with their higher accident frequency
+
+3. **Road Surface Conditions**
+   - **Predominant State**: Dry surfaces across all cities
+   - **Secondary Condition**: Wet surfaces present in minority of cases
+   - **Infrastructure Recommendation**: Enhanced drainage systems (تصريف المياه) infrastructure improvements needed to prevent wet surface accidents during rainy seasons
+
+4. **Road Properties Distribution**
+   - **Standard Pattern**: Flat, straight roads dominate across all governorates
+   - **Amman Exception**: Very low percentage of upright straight roads, reflecting urban environment complexity
+   - **Interpretation**: Road design is relatively consistent; accident variations driven more by traffic volume and driver behavior than road geometry
+
+---
+
 ## Analysis Methodology
 
 - **Data Preprocessing**: Excel for initial data cleaning and quality checks
   - Removal of suspicious rows with time/light inconsistencies
   - Driver age validation and normalization
   - Duplicate row identification and removal
+  - Pre-calculated field engineering for Power BI optimization
 - **Database**: SQLite for structured querying
-- **Visualization**: Matplotlib and Seaborn for charts and statistical graphics
+- **Visualization**: 
+  - Matplotlib and Seaborn for statistical charts
+  - Power BI for interactive dashboard and drill-down analysis
 - **Deduplication**: Grouped by City/Date or Driver Mistake/Date to ensure that accidents involving multiple vehicles (2+ cars) are calculated only once per incident, preventing double-counting and ensuring accurate daily-level accuracy
+
+---
+
+## Business Recommendations
+
+Based on the comprehensive analysis of traffic accident data in Jordan:
+
+1. **Driver Safety Interventions**: Target 26-45 age demographic with specialized training programs focusing on lane discipline and speed awareness
+2. **Infrastructure Improvement**: Prioritize drainage system enhancements (تصريف المياه) in urban areas to reduce wet surface accidents
+3. **License Class Enforcement**: Strengthen validation mechanisms for Class 3 (Passenger Vehicle) license holders given their high fatality rate
+4. **Temporal Campaigns**: Intensify road safety campaigns during high-risk periods (November, March, December, and weekends)
+5. **Geographic Focus**: Implement severity-reduction programs in rural governorates (Maan, Mafraq, Tafila) with proven intervention strategies
 
 ---
 
 ## Key Files
 
-- **SQL Analysis.ipynb**: Complete analysis with SQL queries, visualizations, and detailed interpretations
-- **Cleaned Data**: Used for all analysis to ensure data integrity
-
----
-
-## Recommendations
-
-1. **Focus Prevention Efforts on High-Risk Areas**: Implement targeted traffic safety programs in Maan and Mafraq
-2. **License Enforcement**: Strengthen enforcement of driver licensing requirements
-3. **Speed Management**: Implement speed control measures, especially on routes prone to multi-vehicle accidents
-4. **Seasonal Safety Campaigns**: Enhance safety awareness during November, March, and winter months
-5. **Weekend Vigilance**: Increase traffic monitoring and enforcement on Fridays and Saturdays
+- **SQL Analysis.ipynb**: Complete SQL analysis with queries, visualizations, and detailed interpretations
+- **JO_Traffic_Accident_Dashboard**: Interactive Power BI dashboard with geographic, temporal, and demographic drill-down capabilities
+- **Cleaned Data (V2)**: Enhanced dataset with pre-calculated columns optimized for Power BI reporting
 
 ---
 
